@@ -1,0 +1,80 @@
+<configuration>
+
+    <!--
+        To load Spring Boot's default configuration, you can include:
+        <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+        Note: This might interfere with the custom appenders defined below. Use as needed.
+    -->
+
+    <!--
+        1. CONSOLE (JSON) APPENDER
+            Logs output to the console for local debugging.
+            Uses net.logstash.logback.encoder.LoggingEventEncoder to format logs as JSON.
+    -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <mdc/>
+                <arguments/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!--
+        2. AUDIT FILE APPENDER
+            Writes audit-related logs to a file.
+            a. Time-based rolling policy: A new file is created daily.
+            b. maxHistory: Specifies the number of days to retain log files.
+            c. Consider mounting the logs directory externally to avoid losing files when the container restarts.
+    -->
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Path to the log file -->
+        <file>logs/audit/audit.log</file>
+
+        <!-- Time-based rolling settings -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- File naming pattern with date -->
+            <fileNamePattern>logs/audit/audit.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Maximum retention period (in days) -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+
+        <!-- JSON Encoder for structured logs -->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <mdc/>
+                <arguments/>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!--
+        3. LOGGER (for AUDIT)
+            Specifically for audit logs. Any logger that uses "com.cathay.internship.audit"
+            will write messages to the AUDIT_FILE appender, without interfering with other loggers.
+    -->
+    <logger name="com.cathay.internship.audit" level="INFO" additivity="false">
+        <appender-ref ref="AUDIT_FILE"/>
+    </logger>
+
+    <!--
+        4. ROOT LOGGER
+            Default Level = INFO. Outputs all non-audit logs to the console.
+            To write root logs to a file as well, you can add another FileAppender.
+    -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

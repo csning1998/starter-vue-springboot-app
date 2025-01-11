@@ -1,0 +1,50 @@
+# Helper files
+HELP.md
+
+### Logs
+logs/
+*.log
+
+### Gradle
+backend/.gradle/
+backend/build/
+gradle/wrapper/*.lock
+backend/tmp/
+
+### Frontend
+frontend/dist/
+frontend/node_modules/
+frontend/.npm/
+frontend/package-lock.json
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+frontend/.vscode/
+frontend/tsconfig.tsbuildinfo
+
+### IDEs
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+.history/
+
+### Docker
+docker-compose.override.yml
+.docker/
+
+### OS-specific
+.DS_Store
+Thumbs.db
+
+### Temporary files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Environment files
+.env
+.env.*

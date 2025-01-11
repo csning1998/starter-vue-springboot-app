@@ -1,0 +1,35 @@
+# Stage 1: Build the application
+FROM openjdk:21-jdk-slim AS builder
+
+# Update the Environment
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Copy Gradle Wrapper and necessary configuration files
+COPY gradlew gradlew.bat /app/
+COPY gradle /app/gradle/
+COPY build.gradle.kts settings.gradle.kts /app/
+COPY src /app/src/
+
+# Grant execute permissions and build the project
+RUN chmod +x gradlew && ./gradlew build -x test --no-daemon
+
+# Stage 2: Run the application
+FROM openjdk:21-jdk-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the wait-for-it.sh script
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# Copy the wait-for-it.sh script
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
+# Start the application
+CMD ["java", "-jar", "app.jar"]
