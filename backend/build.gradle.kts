@@ -26,10 +26,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.postgresql:postgresql:42.7.3")
 
 	// Database and Migration
-//	implementation("org.liquibase:liquibase-core")
-	runtimeOnly("com.ibm.db2:jcc")
 	implementation("com.h2database:h2")
 
 	// Development Tools
