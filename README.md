@@ -1,4 +1,4 @@
-# Project with Dev Stack of Vue + Vite + TypeScript + Spring Boot + IBM DB2
+# Project with Dev Stack of Vue + Vite + TypeScript + Spring Boot + Postgres
 
 ---
 
@@ -8,7 +8,7 @@ This project is a modern web application stack leveraging the following technolo
 
 - **Frontend**: Vue.js (using Vite as the build tool) with TypeScript.
 - **Backend**: Spring Boot framework.
-- **Database**: IBM DB2, configured and managed via Docker.
+- **Database**: Postgres, configured and managed via Docker.
 
 The project is containerized with Docker Compose to streamline setup and deployment, supporting both development and production environments.
 
@@ -20,7 +20,7 @@ The project is containerized with Docker Compose to streamline setup and deploym
 
 ```bash
 git clone https://github.com/csning1998/internship-vue-springboot-api-app.git
-cd Internship
+cd internship-vue-springboot-api-app
 ```
 
 ### 2. Configure Environment Variables
@@ -106,17 +106,21 @@ docker compose --env-file .env.prod up
 
 ### Database Management
 
-To connect to the IBM DB2 database manually for queries or management:
+To connect to the Postgres database manually for queries or management:
 
-1. Enter the DB2 container:
+1. ​Enter the Postgres container (the service name in `docker-compose.yaml` is `postgres`):
     ```bash
-    docker exec -it <db2-container-name> bash
+    docker exec -it <container-id-or-name-of-postgres> bash
     ```
 
-2. Connect to the database:
+    ​You can find the container name by running docker ps.
+
+2. Connect to the database using `psql`. The username and database name are defined in your `docker-compose.yaml`:
     ```bash
-    db2 connect to TESTDB user <username> using <password>
+    psql --username=postgres --dbname=testdb
     ```
+
+    ​You will then be prompted to enter the password (`my-postgres-password`).
 
 ### Rebuilding the Database
 
